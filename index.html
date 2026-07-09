@@ -262,17 +262,100 @@
     .hero-frame {
       position: relative; overflow: hidden;
       background:
-        repeating-conic-gradient(from 0deg at 50% 40%,
-          rgba(166,255,94,.16) 0deg 6deg,
-          rgba(10,23,16,0) 6deg 12deg);
+        linear-gradient(rgba(166,255,94,.08) 1px, transparent 1px) 0 0/50px 50px,
+        linear-gradient(90deg, rgba(166,255,94,.08) 1px, transparent 1px) 0 0/50px 50px,
+        linear-gradient(rgba(166,255,94,.16) 1px, transparent 1px) 0 0/200px 200px,
+        linear-gradient(90deg, rgba(166,255,94,.16) 1px, transparent 1px) 0 0/200px 200px,
+        linear-gradient(150deg, var(--panel-hi) 0%, var(--bg2) 55%, var(--bg) 100%);
       border-bottom: var(--stroke) solid var(--ink2);
     }
     .hero-frame::before {
       content: '';
-      position: absolute; inset: 0;
-      background: radial-gradient(ellipse at 50% 26%, rgba(6,15,9,0) 0%, var(--bg2) 76%);
+      position: absolute; inset: 0; z-index: 1;
+      background:
+        radial-gradient(ellipse at 50% 30%, rgba(6,15,9,0) 0%, var(--bg2) 82%),
+        radial-gradient(circle, rgba(166,255,94,.55) 1px, transparent 1.3px);
+      background-size: 100% 100%, 46px 46px;
+      background-repeat: no-repeat, repeat;
+      opacity: 1;
       pointer-events: none;
     }
+    .hero-net {
+      position: absolute; inset: 0; z-index: 1; width: 100%; height: 100%;
+      pointer-events: none;
+    }
+    .hero-net .flow-path {
+      fill: none; stroke-width: 1.6; stroke-linecap: round;
+      stroke-dasharray: 2 22;
+      animation: flow-dash linear infinite;
+    }
+    .hero-net .flow-path.p1 { stroke: var(--lime);    animation-duration: 5.5s; }
+    .hero-net .flow-path.p2 { stroke: var(--gold);    animation-duration: 7s; animation-delay: -2s; }
+    .hero-net .flow-path.p3 { stroke: var(--aurora1); animation-duration: 6.2s; animation-delay: -1s; }
+    .hero-net .flow-path.p4 { stroke: var(--lime2);   animation-duration: 8s; animation-delay: -3.5s; }
+    .hero-net .link-line {
+      fill: none; stroke: rgba(166,255,94,.1); stroke-width: 1;
+    }
+    @keyframes flow-dash { to { stroke-dashoffset: -240; } }
+    .hero-net .flow-node { animation: node-glow 2.6s ease-in-out infinite; transform-box: fill-box; transform-origin: center; }
+    .hero-net .flow-node.d1 { animation-delay: .2s; }
+    .hero-net .flow-node.d2 { animation-delay: .9s; }
+    .hero-net .flow-node.d3 { animation-delay: 1.5s; }
+    .hero-net .flow-node.d4 { animation-delay: 2.1s; }
+    @keyframes node-glow {
+      0%, 100% { opacity: .45; transform: scale(.8); }
+      50%      { opacity: 1;   transform: scale(1.3); }
+    }
+
+    .hud-corner {
+      position: absolute; width: 30px; height: 30px; z-index: 2;
+      pointer-events: none; opacity: .65;
+    }
+    .hud-corner.tl { top: 20px; left: 20px; border-top: 2px solid var(--lime);    border-left: 2px solid var(--lime); }
+    .hud-corner.tr { top: 20px; right: 20px; border-top: 2px solid var(--gold);   border-right: 2px solid var(--gold); }
+    .hud-corner.bl { bottom: 20px; left: 20px; border-bottom: 2px solid var(--aurora1); border-left: 2px solid var(--aurora1); }
+    .hud-corner.br { bottom: 20px; right: 20px; border-bottom: 2px solid var(--lime);   border-right: 2px solid var(--lime); }
+
+    .hud-label {
+      position: absolute; z-index: 2; display: flex; align-items: center; gap: .4rem;
+      font-family: var(--mono); font-size: .58rem; letter-spacing: .16em;
+      text-transform: uppercase; color: var(--muted2); pointer-events: none;
+    }
+    .hud-label.label-top    { top: 26px; right: 62px; }
+    .hud-label.label-bottom { bottom: 26px; left: 62px; }
+    .hud-label .hud-dot {
+      width: 5px; height: 5px; border-radius: 50%; background: var(--lime);
+      box-shadow: 0 0 6px 1px rgba(166,255,94,.7); animation: blink 1.6s step-end infinite;
+    }
+
+    .terminal-card {
+      position: relative; z-index: 2; margin-top: 1rem; width: 100%;
+      background: rgba(8,26,16,.72); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+      border: 1.5px solid var(--border3); border-radius: 10px; overflow: hidden;
+      box-shadow: 0 8px 24px rgba(0,0,0,.4), 0 0 20px rgba(166,255,94,.08);
+      opacity: 0; animation: fade-up .7s .9s cubic-bezier(.16,1,.3,1) forwards;
+    }
+    .terminal-head {
+      display: flex; align-items: center; gap: .35rem;
+      padding: .5rem .7rem; background: rgba(166,255,94,.06); border-bottom: 1px solid var(--border2);
+    }
+    .t-dot { width: 7px; height: 7px; border-radius: 50%; display: inline-block; }
+    .t-dot.r { background: #ff6b6b; }
+    .t-dot.y { background: #ffd166; }
+    .t-dot.g { background: #6ee7a0; }
+    .terminal-title { margin-left: .4rem; font-family: var(--mono); font-size: .58rem; color: var(--muted2); }
+    .terminal-body { padding: .7rem .8rem .8rem; font-family: var(--mono); font-size: .62rem; line-height: 1.9; }
+    .terminal-body p { color: var(--muted); opacity: 0; animation: term-line .5s ease forwards; }
+    .terminal-body p:nth-child(1) { animation-delay: 1.2s; }
+    .terminal-body p:nth-child(2) { animation-delay: 1.55s; }
+    .terminal-body p:nth-child(3) { animation-delay: 2s; }
+    .terminal-body p:nth-child(4) { animation-delay: 2.35s; }
+    .terminal-body p:nth-child(5) { animation-delay: 2.8s; }
+    .t-prompt { color: var(--lime); font-weight: 700; margin-right: .35rem; }
+    .t-out { color: var(--white); padding-left: 1rem; }
+    .t-out.t-ok { color: var(--lime); }
+    .t-cursor { display: inline-block; width: 6px; background: var(--lime); animation: blink 1s step-end infinite; }
+    @keyframes term-line { from { opacity: 0; transform: translateX(-6px); } to { opacity: 1; transform: none; } }
     .hero-inner { padding: 5rem 3rem 4.5rem; position: relative; z-index: 2; }
 
     .hero-glow {
@@ -390,21 +473,6 @@
         linear-gradient(var(--gold),var(--gold)) bottom right / 2px 16px no-repeat;
       opacity: .95;
     }
-
-    .photo-badge {
-      margin-top: 1rem; background: linear-gradient(100deg, var(--lime), var(--g1));
-      border: var(--stroke) solid var(--ink2);
-      border-radius: var(--radius); padding: .9rem 1.1rem;
-      box-shadow: 0 4px 0 0 var(--ink2), 0 0 20px rgba(166,255,94,.25);
-      display: flex; align-items: center; gap: .7rem;
-    }
-    .badge-led {
-      width: 8px; height: 8px; border-radius: 50%;
-      background: var(--ink); flex-shrink: 0;
-      animation: blink 1.4s step-end infinite;
-    }
-    .badge-label { font-family: var(--mono); font-weight: 700; font-size: .68rem; color: var(--ink); }
-    .badge-sub { font-family: var(--mono); font-size: .58rem; color: var(--ink2); display: block; margin-top: .1rem; }
 
     #services .wrap { padding: 4.4rem 2.8rem; }
     .services-intro {
@@ -714,6 +782,7 @@
       .nav-links { display: none; }
       .hero-grid { grid-template-columns: 1fr; }
       .hero-photo { display: none; }
+      .hud-corner, .hud-label, .terminal-card { display: none; }
       .hero-inner { padding: 3.5rem 1.6rem; }
       #services .wrap, #about .wrap, #skills .wrap, #projects .wrap, #contact .wrap { padding: 3rem 1.6rem; }
       .about-grid { grid-template-columns: 1fr; gap: 2.5rem; }
@@ -758,6 +827,28 @@
       <div class="panel hero-frame">
         <div class="hero-glow"></div>
         <div class="hero-glow-2"></div>
+        <svg class="hero-net" viewBox="0 0 1400 520" preserveAspectRatio="none" aria-hidden="true">
+          <path class="link-line" d="M0,380 C220,380 260,180 460,180 S740,60 940,60 S1180,140 1400,110"/>
+          <path class="link-line" d="M0,90 C180,90 240,300 420,300 S660,430 860,430 S1120,340 1400,390"/>
+          <path class="link-line" d="M90,0 C90,160 300,160 300,300 S520,420 620,420"/>
+          <path class="link-line" d="M1320,0 C1320,130 1150,130 1150,270 S940,380 830,380"/>
+          <path class="flow-path p1" d="M0,380 C220,380 260,180 460,180 S740,60 940,60 S1180,140 1400,110"/>
+          <path class="flow-path p2" d="M0,90 C180,90 240,300 420,300 S660,430 860,430 S1120,340 1400,390"/>
+          <path class="flow-path p3" d="M90,0 C90,160 300,160 300,300 S520,420 620,420"/>
+          <path class="flow-path p4" d="M1320,0 C1320,130 1150,130 1150,270 S940,380 830,380"/>
+          <circle class="flow-node d1" cx="460" cy="180" r="4.5" fill="var(--lime)"/>
+          <circle class="flow-node d2" cx="940" cy="60"  r="4"   fill="var(--gold)"/>
+          <circle class="flow-node d3" cx="420" cy="300" r="4"   fill="var(--aurora1)"/>
+          <circle class="flow-node d4" cx="860" cy="430" r="4.5" fill="var(--lime2)"/>
+          <circle class="flow-node d2" cx="300" cy="300" r="3.5" fill="var(--gold)"/>
+          <circle class="flow-node d3" cx="1150" cy="270" r="3.5" fill="var(--aurora1)"/>
+        </svg>
+        <div class="hud-corner tl"></div>
+        <div class="hud-corner tr"></div>
+        <div class="hud-corner bl"></div>
+        <div class="hud-corner br"></div>
+        <span class="hud-label label-top"><span class="hud-dot"></span>System // Online</span>
+        <span class="hud-label label-bottom">Self-doubt kills talent.</span>
         <div class="hero-inner">
           <div class="hero-grid">
 
@@ -789,11 +880,16 @@
                 <img src="PFP.jpg" alt="Gerald Gabriel Li"/>
                 <div class="photo-corners"></div>
               </div>
-              <div class="photo-badge">
-                <span class="badge-led"></span>
-                <div>
-                  <span class="badge-label">Open to Work</span>
-                  <span class="badge-sub">Responds within 24 hours</span>
+              <div class="terminal-card">
+                <div class="terminal-head">
+                  <span class="t-dot r"></span><span class="t-dot y"></span><span class="t-dot g"></span>
+                  <span class="terminal-title">geraldli@portfolio</span>
+                </div>
+                <div class="terminal-body">
+                  <p><span class="t-prompt">$</span>status</p>
+                  <p class="t-out t-ok">● Open to Work - Responds within 24 hours</p>
+                  <p class="t-out"></p>
+                  <p><span class="t-prompt">$ active</span><span class="t-cursor">&nbsp;</span></p>
                 </div>
               </div>
             </div>
